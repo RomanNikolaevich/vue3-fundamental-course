@@ -2,18 +2,19 @@
     <form @submit.prevent>
         <!--            @submit.prevent - отключает действия браузера по умолчанию-->
         <h4>Создание поста </h4>
-        <!--            v-bind - связывает данные с конкретным компонентом-->
-        <input v-bind:value="post.title"
-               @input="post.title = $event.target.value"
-               class="input"
-               type="text"
-               placeholder="Название">
-        <input v-bind:value="post.body"
-               @input="post.body = $event.target.value"
+        <!--           v-model заменяет v-bind и слушатель событий-->
+        <input
+                v-model="post.title"
+                class="input"
+                type="text"
+                placeholder="Название">
+        <input v-model="post.body"
                class="input"
                type="text"
                placeholder="Описание">
-        <button class="btn">
+        <button
+                class="btn"
+                @click="createPost">
             Создать
         </button>
     </form>
@@ -21,14 +22,24 @@
 
 <script>
 export default {
-data() {
-    return {
-        post: {
-            title: '',
-            body: '',
+    data() {
+        return {
+            post: {
+                title: '',
+                body: '',
+            }
+        }
+    },
+    methods: {
+        createPost() {
+            this.post.id = Date.now();
+            this.$emit('create', this.post);
+            this.post = {
+                title: '',
+                body: '',
+            };
         }
     }
-}
 }
 </script>
 
