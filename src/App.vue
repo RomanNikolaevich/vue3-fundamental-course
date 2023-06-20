@@ -2,9 +2,10 @@
     <div class="app">
         <h1>Страница с постами</h1>
         <my-button
-            @click="showDialog"
-        style="margin: 15px 0"
-        >Создать пост</my-button>
+                @click="showDialog"
+                style="margin: 15px 0"
+        >Создать пост
+        </my-button>
         <my-dialog v-model:show="dialogVisible">
             <post-form
                     @create="createPost"
@@ -14,8 +15,9 @@
         <post-list
                 :posts="posts"
                 @remove="removePost"
+                v-if="!isPostLoading"
         />
-
+        <div v-else>Идет загрузка...</div>
     </div>
 </template>
 
@@ -24,6 +26,7 @@ import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MyDialog from "@/components/UI/MyDialog.vue";
 import MyButton from "@/components/UI/MyButton.vue";
+import axios from 'axios'
 
 export default {
     components: {
@@ -33,13 +36,9 @@ export default {
     },
     data() {
         return {
-            posts: [
-                {id: 1, title: 'Javascript 1', body: 'Описание поста 1'},
-                {id: 2, title: 'Javascript 2', body: 'Описание поста 2'},
-                {id: 3, title: 'Javascript 3', body: 'Описание поста 3'},
-                {id: 4, title: 'Javascript 4', body: 'Описание поста 4'},
-            ],
+            posts: [],
             dialogVisible: false,
+            isPostLoading: false,
         }
     },
     methods: {
@@ -52,8 +51,22 @@ export default {
         },
         showDialog() {
             this.dialogVisible = true;
+        },
+        async fetchPosts() {
+            try {
+                this.isPostLoading = true;
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+                this.posts = response.data;
+                console.log(response)
+            } catch (e) {
+                alert('Error: ' + e.message)
+            } finally {
+                this.isPostLoading = false;
+            }
         }
-
+    },
+    mounted() {
+        this.fetchPosts();
     }
 }
 </script>
