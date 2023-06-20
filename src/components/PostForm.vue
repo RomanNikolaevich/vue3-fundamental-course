@@ -3,17 +3,14 @@
         <!--            @submit.prevent - отключает действия браузера по умолчанию-->
         <h4>Создание поста </h4>
         <!--           v-model заменяет v-bind и слушатель событий-->
-        <input
+        <my-input
                 v-model="post.title"
-                class="input"
                 type="text"
-                placeholder="Название">
-        <input v-model="post.body"
-               class="input"
+                placeholder="Название"/>
+        <my-input v-model="post.body"
                type="text"
-               placeholder="Описание">
+               placeholder="Описание"/>
         <my-button
-                class="btn"
                 style="align-self: flex-end; margin-top: 15px"
                 @click="createPost">
             Создать
@@ -22,10 +19,11 @@
 </template>
 
 <script>
-import MyButton from "@/components/UI/MyButton.vue";
+
+// import MyInput from "@/components/UI/Myinput.vue";
 
 export default {
-    components: {MyButton},
+    // components: {MyInput},
     data() {
         return {
             post: {
@@ -52,13 +50,4 @@ form {
     display: flex;
     flex-direction: column;
 }
-
-.input {
-    width: 100%;
-    border: 1px solid teal;
-    padding: 10px 15px;
-    margin-top: 15px;
-}
-
-
 </style>
