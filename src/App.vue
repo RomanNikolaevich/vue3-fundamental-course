@@ -29,21 +29,28 @@
                 v-if="!isPostLoading"
         />
         <div v-else>Идет загрузка...</div>
-        <div class="page__wrapper">
-            <div
-                    v-if="totalPages > 0"
-                    v-for="pageNumber in totalPages"
-                    :key="pageNumber"
-                    class="page"
-                    :class="{
-                        'current-page': page === pageNumber
-                    }"
-                    @click="changePage(pageNumber)"
-            >
-                {{ pageNumber }}
-            </div>
-            <div v-else>Нет данных о количестве страниц</div>
+
+        <!--        Блок подгрузки новых страниц-->
+        <div ref="observer" class="observer">
+
         </div>
+
+        <!--        Блок цифровой навигации-->
+        <!--        <div class="page__wrapper">-->
+        <!--            <div-->
+        <!--                    v-if="totalPages > 0"-->
+        <!--                    v-for="pageNumber in totalPages"-->
+        <!--                    :key="pageNumber"-->
+        <!--                    class="page"-->
+        <!--                    :class="{-->
+        <!--                        'current-page': page === pageNumber-->
+        <!--                    }"-->
+        <!--                    @click="changePage(pageNumber)"-->
+        <!--            >-->
+        <!--                {{ pageNumber }}-->
+        <!--            </div>-->
+        <!--            <div v-else>Нет данных о количестве страниц</div>-->
+        <!--        </div>-->
     </div>
 </template>
 
@@ -91,11 +98,9 @@ export default {
         showDialog() {
             this.dialogVisible = true;
         },
-        changePage(pageNumber) {
-            this.page = pageNumber;
-
-
-        },
+        // changePage(pageNumber) {
+        //     this.page = pageNumber;
+        // },
         async fetchPosts() {
             try {
                 this.isPostLoading = true;
@@ -112,10 +117,39 @@ export default {
             } finally {
                 this.isPostLoading = false;
             }
+        },
+        async loadMorePosts() {
+            try {
+                this.page += 1;
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                    params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+                });
+                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit);
+                this.posts = [...this.posts, ...response.data];
+            } catch (e) {
+                alert('Error: ' + e.message)
+            }
         }
+
     },
     mounted() {
         this.fetchPosts();
+
+        let options = {
+            rootMargin: "0px",
+            threshold: 1.0,
+        };
+        let callback = (enries, observer) => {
+            if (enries[0].isIntersecting && this.page < this.totalPages) {
+                this.loadMorePosts();
+            }
+        }
+
+        let observer = new IntersectionObserver(callback, options);
+        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
@@ -129,9 +163,9 @@ export default {
         }
     },
     watch: {
-        page() {
-            this.fetchPosts();
-        }
+        // page() {
+        //     this.fetchPosts();
+        // }
     }
 
 }
@@ -167,5 +201,10 @@ export default {
 
 .current-page {
     border: 2px solid teal;
+}
+
+.observer {
+    height: 30px;
+    background: green;
 }
 </style>
