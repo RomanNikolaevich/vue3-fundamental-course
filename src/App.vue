@@ -7,9 +7,9 @@
             >Создать пост
             </my-button>
             <my-select
-                :modelValue="selectedSort"
-                @update:modelValue="selectedSort = $event"
-                :options="sortOptions"
+                    :modelValue="selectedSort"
+                    @update:modelValue="selectedSort = $event"
+                    :options="sortOptions"
             />
         </div>
 
@@ -20,7 +20,7 @@
         </my-dialog>
 
         <post-list
-                :posts="posts"
+                :posts="sortedPosts"
                 @remove="removePost"
                 v-if="!isPostLoading"
         />
@@ -81,7 +81,19 @@ export default {
     },
     mounted() {
         this.fetchPosts();
+    },
+    computed: {
+        sortedPosts() {
+            return [...this.posts.sort((post1, post2) => {
+                return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+                // сравнение двух постов (сортировка по названию)
+            })]
+        }
+    },
+    watch: {
+
     }
+
 }
 </script>
 
