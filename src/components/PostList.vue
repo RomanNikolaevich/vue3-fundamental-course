@@ -46,4 +46,8 @@ export default {
     opacity: 0;
     transform: translateY(30px);
 }
+
+.post-list-move {
+    transition: transform 0.4s ease;
+}
 </style>
