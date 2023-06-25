@@ -4,6 +4,7 @@
         <my-input
                 v-model="searchQuery"
                 placeholder="Поиск ..."
+                v-focus
         />
         <div class="app__btns">
             <my-button
@@ -31,7 +32,7 @@
         <div v-else>Идет загрузка...</div>
 
         <!--        Блок подгрузки новых страниц-->
-        <div ref="observer" class="observer">
+        <div v-intersection="loadMorePosts" class="observer">
 
         </div>
 
@@ -138,18 +139,6 @@ export default {
     mounted() {
         this.fetchPosts();
 
-        let options = {
-            rootMargin: "0px",
-            threshold: 1.0,
-        };
-        let callback = (enries, observer) => {
-            if (enries[0].isIntersecting && this.page < this.totalPages) {
-                this.loadMorePosts();
-            }
-        }
-
-        let observer = new IntersectionObserver(callback, options);
-        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
