@@ -1,11 +1,10 @@
 import Main from "@/pages/Main.vue";
 import {createRouter, createWebHistory} from "vue-router";
-import {create} from "axios";
 import PostPage from "@/pages/PostPage.vue";
 import About from "@/pages/About.vue";
 import PostIdPage from "@/pages/PostIdPage.vue";
-import {Store} from "vuex";
 import PostPageWithStore from "@/pages/PostPageWithStore.vue";
+import PostPageCompositionApi from "@/pages/PostPageCompositionApi.vue";
 
 
 const routes = [
@@ -28,6 +27,10 @@ const routes = [
     {
         path: '/store',
         component: PostPageWithStore
+    },
+    {
+        path: '/composition',
+        component: PostPageCompositionApi,
     }
 
 ]
