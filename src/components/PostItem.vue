@@ -1,7 +1,8 @@
 <template>
     <div class="post">
         <div>
-            <div><strong>Номер поста: </strong> {{ post.id }}</div>
+            <div><strong>Номер поста: </strong> {{ post.id }}
+                <strong>Количествор лайков: </strong>{{$store.state.likes}}</div>
             <div><strong>Название: </strong> {{ post.title }}</div>
             <div><strong>Описание: </strong> {{ post.body }}</div>
         </div>
