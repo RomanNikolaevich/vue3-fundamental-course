@@ -62,7 +62,7 @@ import MyDialog from "@/components/UI/MyDialog.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import axios, {post} from 'axios'
 import MySelect from "@/components/UI/MySelect.vue";
-import MyInput from "@/components/UI/Myinput.vue";
+import MyInput from "@/components/UI/MyInput.vue";
 
 export default {
     components: {

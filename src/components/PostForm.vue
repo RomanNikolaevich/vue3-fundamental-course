@@ -21,7 +21,7 @@
 
 <script>
 
-// import MyInput from "@/components/UI/Myinput.vue";
+// import MyInput from "@/components/UI/MyInput.vue";
 
 export default {
     // components: {MyInput},
